@@ -2,3 +2,8 @@ llava-1.5-7b-hf/*
 openai/*
 Qwen/*
 show_model/*
+output_model_lora_show/*
+mini_model/*
+historyevents/*
+train_log/*
+qwen2.5_3B_Instruct_clipvL14_model/*
