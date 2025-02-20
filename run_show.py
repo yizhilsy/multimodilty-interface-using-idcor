@@ -69,11 +69,16 @@ def load_model_processor(modelargs: ModelArguments):
     # 读取处理器
     processor = LlavaProcessor.from_pretrained(modelargs.model_name_or_path)
 
-    if modelargs.train_type == "use_lora":
+    if modelargs.train_type == "use_lora":  # 指定使用lora训练，配置lora的相关的参数
         logging.warning("Loading model to Lora")
 
         from peft import LoraConfig, get_peft_model
 
+        """
+            TODO: 可以不用lora, 因为参数比较少, 再训练几次
+            引入lora的配置可能引入了一个新的变量, 会导致实验的不严谨性
+        """
+        
         LORA_R = 32
         # LORA_ALPHA = 16
         LORA_DROPOUT = 0.05

@@ -14,7 +14,7 @@ os.chdir(current_file_directory)
 # 验证当前工作目录
 print("当前工作目录:", os.getcwd())
 
-model_name_or_path = "llava-1.5-7b-hf"
+model_name_or_path = "./llava-1.5-7b-hf"
 device = "cuda:0"
 
 model = LlavaForConditionalGeneration.from_pretrained(

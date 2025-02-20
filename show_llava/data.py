@@ -10,6 +10,7 @@ from torch import Tensor
 from dataclasses import dataclass
 
 class LlavaDataset(Dataset):
+    # 构造函数
     def __init__(self, dataset_dir:str) -> None:
         super().__init__()
         self.chat_data, self.image_dir = self.build_dataset(dataset_dir)
@@ -66,6 +67,7 @@ def build_qaimage(processor: AutoProcessor, q_text: str, a_text: str, image_path
 
 # 定义 collator 函数
 class TrainLLavaModelCollator:
+    # 构造函数
     def __init__(self, processor: AutoProcessor, IGNORE_INDEX: int) -> None:
         self.processor = processor
         self.ignore_index = IGNORE_INDEX
