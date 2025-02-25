@@ -26,7 +26,7 @@ class IdCor_LlavaForConditionalGeneration(LlavaForConditionalGeneration):
         # 初始化bert模型及其tokenizer
         self.bert_processor, self.bert_model = self.get_bert_model(pretrained_bert_name_or_path, "cuda:0")
     
-    def get_bert_model(pretrained_name_or_path: str, device: str) -> tuple[BertTokenizer, BertModel]:
+    def get_bert_model(self, pretrained_name_or_path: str, device: str) -> tuple[BertTokenizer, BertModel]:
         """
         Get the bert model and tokenizer
         Args:

@@ -18,7 +18,13 @@ from transformers import (
 )
 
 # 导入读取数据集和处理数据集为向量的工具类
-from show_llava.data import LlavaDataset, TrainLLavaModelCollator
+from show_llava.data import (
+    LlavaDataset, 
+    TrainLLavaModelCollator, 
+    LlavaDataset_Eval, 
+    LlavaDataset_Train
+)
+
 from show_llava.util import print_trainable_parameters
 
 logger = logging.getLogger(__name__)
@@ -45,6 +51,7 @@ class ModelArguments:
             1. use_lora:使用lora训练,
             2. none:全量参数训练;
             3. freeze_vision:只冻结vision_tower进行训练
+            4. freeze_vision_and_language:冻结vision_tower和language_model进行训练
             """
         },
     )
@@ -105,20 +112,31 @@ def load_model_processor(modelargs: ModelArguments):
 
         for param in model.vision_tower.parameters():
             param.requires_grad = False
-    print_trainable_parameters(model)
+    elif modelargs.train_type == "freeze_vision_and_language":
+        logging.warning("llava stage1 冻结vision_tower和language_model网络层, 剩下的网络权重进行训练")
+        
+        # 冻结 vision_tower 网络层
+        for param in model.vision_tower.parameters():
+            param.requires_grad = False
 
+        # 冻结 language_model 网络层
+        for param in model.language_model.parameters():
+            param.requires_grad = False
+
+        # 显示指定 multi_modal_projector 层参与梯度更新
+        for param in model.multi_modal_projector.parameters():
+            param.requires_grad = True
+
+    print_trainable_parameters(model)   # 打印此时可训练的参数占全部参数的百分比
     return model, processor
 
 
 def load_dataset_collator(processor, dataargs: DataArguments):
-
     llava_dataset = LlavaDataset(
         dataargs.data_path  # "data/liuhaotian/LLaVA-CC3M-Pretrain-595K"
     )
     data_collator = TrainLLavaModelCollator(processor, -100)
-
     return llava_dataset, data_collator
-
 
 def train():
     # 将命令行参数解析成 dataclass 对象
@@ -141,6 +159,36 @@ def train():
     trainer.save_state()
     trainer.save_model(output_dir=training_args.output_dir)
 
+def stage1_load_dataset_collator(processor, dataargs: DataArguments):
+    llava_train_dataset = LlavaDataset_Train(
+        dataargs.data_path
+    )
+    llava_eval_dataset = LlavaDataset_Eval(
+        dataargs.data_path
+    )
+    data_collator = TrainLLavaModelCollator(processor, -100)
+    return llava_train_dataset, llava_eval_dataset, data_collator
+
+def stage1train():
+    # 将命令行参数解析成 dataclass 对象
+    parser = transformers.HfArgumentParser(
+        (ModelArguments, DataArguments, TrainingArguments)
+    )
+    model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+    model, processor = load_model_processor(model_args)
+    train_dataset, eval_dataset, data_collator = stage1_load_dataset_collator(processor, data_args)
+
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=train_dataset,
+        eval_dataset=eval_dataset,
+        data_collator=data_collator,
+    )
+
+    trainer.train()
+    trainer.save_state()
+    trainer.save_model(output_dir=training_args.output_dir)
 
 if __name__ == "__main__":
     logging.basicConfig(
@@ -148,4 +196,4 @@ if __name__ == "__main__":
         level=logging.INFO,
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-    train()
+    stage1train()
