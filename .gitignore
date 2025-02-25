@@ -7,3 +7,6 @@ mini_model/*
 historyevents/*
 train_log/*
 qwen2.5_3B_Instruct_clipvL14_model/*
+result_model/*
+representation/*
+google-bert/*

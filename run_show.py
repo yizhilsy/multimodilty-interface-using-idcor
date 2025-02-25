@@ -45,6 +45,7 @@ class ModelArguments:
             1. use_lora:使用lora训练,
             2. none:全量参数训练;
             3. freeze_vision:只冻结vision_tower进行训练
+            4. freeze_vision_and_language:冻结vision_tower和language_model进行训练
             """
         },
     )
@@ -100,6 +101,22 @@ def load_model_processor(modelargs: ModelArguments):
 
         for param in model.vision_tower.parameters():
             param.requires_grad = False
+
+    elif modelargs.train_type == "freeze_vision_and_language":
+        logging.warning("llava stage1 冻结vision_tower和language_model网络层, 剩下的网络权重进行训练")
+        
+        # 冻结 vision_tower 网络层
+        for param in model.vision_tower.parameters():
+            param.requires_grad = False
+
+        # 冻结 language_model 网络层
+        for param in model.language_model.parameters():
+            param.requires_grad = False
+
+        # 显示指定 multi_modal_projector 层参与梯度更新
+        for param in model.multi_modal_projector.parameters():
+            param.requires_grad = True
+
     print_trainable_parameters(model)
 
     return model, processor
