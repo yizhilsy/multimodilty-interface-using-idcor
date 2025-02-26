@@ -94,7 +94,7 @@ def load_dataset_collator(processor, dataargs: DataArguments):
     return llava_dataset, data_collator
 
 model_args: ModelArguments = ModelArguments(
-    model_name_or_path="./result_model/stage1/[3090stage1]qwen2.5_3B_Instruct_clipvL14",
+    model_name_or_path="./qwen2.5_3B_Instruct_clipvL14_model/model001",
     lora_name_or_path=None,
     bert_name_or_path="./google-bert/bert-base-uncased"
 )
@@ -163,5 +163,5 @@ if __name__ == "__main__":
     logging.info(f"all_text_embeds shape: {all_text_embeds.shape}")
     logging.info(f"all_image_embeds shape: {all_image_embeds.shape}")
 
-    torch.save(all_text_embeds, f'./representation/LLaVA-CC3M-Pretrain-595K/purestage1_qwen2.5_3B_Instruct_clipvL14_model_text.pt')
-    torch.save(all_image_embeds, f'./representation/LLaVA-CC3M-Pretrain-595K/purestage1_qwen2.5_3B_Instruct_clipvL14_model_image.pt')
+    torch.save(all_text_embeds, f'./representation/LLaVA-CC3M-Pretrain-595K/noaligned_qwen2.5_3B_Instruct_clipvL14_model_text.pt')
+    torch.save(all_image_embeds, f'./representation/LLaVA-CC3M-Pretrain-595K/noaligned_qwen2.5_3B_Instruct_clipvL14_model_image.pt')

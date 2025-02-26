@@ -26,12 +26,36 @@ model = LlavaForConditionalGeneration.from_pretrained(
 # image_processor: CLIPImageProcessor, tokenizer: LlamaTokenizerFast
 processor = AutoProcessor.from_pretrained(pretrained_model_name_or_path=model_name_or_path)
 
-prompt = "USER: <image>\nWhat's the content of the image? ASSISTANT:"
-prompt2 = "USER: <image>\nWhat animals are in the image and what are they doing? What is next to these animals? What color are these animals? ASSISTANT:"
-url = "data/000000039769.jpg"
+conversation = [
+    {
+        "role": "user",
+        "content": [
+            {"type": "image"},
+            {"type": "text", "text": "What’s shown in this image?"},
+            ],
+    },
+    {
+        "role": "assistant",
+        "content": [{"type": "text", "text": "This image shows a red stop sign."},]
+    },
+    {
+
+        "role": "user",
+        "content": [
+            {"type": "text", "text": "Describe the image in more details."},
+        ],
+    },
+]
+
+text_prompt = processor.apply_chat_template(conversation, add_generation_prompt=True)
+
+# prompt = "USER: <image>\nWhat's the content of the image? ASSISTANT:"
+# prompt2 = "USER: <image>\nWhat animals are in the image and what are they doing? What is next to these animals? What color are these animals? ASSISTANT:"
+
+url = "data/australia.jpg"
 image = Image.open(fp=url)
 
-inputs = processor(images=image, text=prompt2, return_tensors="pt")
+inputs = processor(images=image, text=text_prompt, return_tensors="pt")
 
 # inputs['input_ids', 'attention_mask', 'pixel_values']，前两个键对应文本输入，第三个键对应图像输入
 for temp_key in inputs.keys():
