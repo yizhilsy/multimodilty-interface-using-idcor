@@ -20,6 +20,7 @@ from typing import Dict, List, Optional, Sequence
 
 import evaluate
 import os, sys
+import argparse
 
 """
     custom package
@@ -46,6 +47,14 @@ os.chdir(current_file_directory)
 device = "cuda:0"
 # 初始化日志
 logger = logging.getLogger(__name__)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--model_name_or_path', type=str, default='./result_model/stage1/[v2.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-5000', help='model_name_or_path')
+parser.add_argument('--lora_name_or_path', type=str, default=None, help='lora_name_or_path')
+parser.add_argument('--bert_name_or_path', type=str, default='./google-bert/bert-base-uncased', help='bert_name_or_path')
+parser.add_argument('--data_path', type=str, default='/d/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K', help='data_path')
+parser.add_argument('--output_representation_name', type=str, default='alpha_qwen2.5_3B_Instruct_clipvL14_model', help='output_representation_name')
+parser.add_argument('--device', type=str, default='cuda:0', help='select device')
 
 # 指定要训练的模型路径及训练参数工具类
 @dataclass
@@ -93,16 +102,6 @@ def load_dataset_collator(processor, dataargs: DataArguments):
 
     return llava_dataset, data_collator
 
-model_args: ModelArguments = ModelArguments(
-    model_name_or_path="./qwen2.5_3B_Instruct_clipvL14_model/model001",
-    lora_name_or_path=None,
-    bert_name_or_path="./google-bert/bert-base-uncased"
-)
-
-data_args: DataArguments = DataArguments(
-    data_path="/home/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K"
-)
-
 if __name__ == "__main__":
     logging.basicConfig(
         format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
@@ -113,6 +112,19 @@ if __name__ == "__main__":
     # 创建保存text_embeds和image_embeds的文件夹
     if not os.path.exists(f'./representation/LLaVA-CC3M-Pretrain-595K'):
         os.makedirs(f'./representation/LLaVA-CC3M-Pretrain-595K', exist_ok=True)
+
+    # 将命令行参数解析成 dataclass 对象
+    args = parser.parse_args()
+    print(args)
+    model_args = ModelArguments(
+        model_name_or_path=args.model_name_or_path,
+        lora_name_or_path=args.lora_name_or_path,
+        bert_name_or_path=args.bert_name_or_path
+    )
+    data_args = DataArguments(
+        data_path=args.data_path
+    )
+    device = args.device
 
     model, processor = load_model_processor(model_args)
     eval_dataset, data_collator = load_dataset_collator(processor, data_args)
@@ -163,5 +175,5 @@ if __name__ == "__main__":
     logging.info(f"all_text_embeds shape: {all_text_embeds.shape}")
     logging.info(f"all_image_embeds shape: {all_image_embeds.shape}")
 
-    torch.save(all_text_embeds, f'./representation/LLaVA-CC3M-Pretrain-595K/noaligned_qwen2.5_3B_Instruct_clipvL14_model_text.pt')
-    torch.save(all_image_embeds, f'./representation/LLaVA-CC3M-Pretrain-595K/noaligned_qwen2.5_3B_Instruct_clipvL14_model_image.pt')
+    torch.save(all_text_embeds, f'./representation/LLaVA-CC3M-Pretrain-595K/{args.output_representation_name}_text.pt')
+    torch.save(all_image_embeds, f'./representation/LLaVA-CC3M-Pretrain-595K/{args.output_representation_name}_image.pt')
