@@ -33,6 +33,29 @@ class LlavaDataset(Dataset):
 
         return (human_input, gpt_output, image_path)
 
+class N24News_LlavaDataset(Dataset):
+    # 构造函数
+    def __init__(self, dataset_dir:str) -> None:
+        super().__init__()
+        self.text_data, self.image_dir = self.build_dataset(dataset_dir=dataset_dir)
+    
+    def build_dataset(self, dataset_dir:str) -> tuple[List[Dict[str, Any]], Path]:
+        dataset_dir = Path(dataset_dir)
+        text_file_path = dataset_dir.joinpath("news").joinpath("conversation_nytimes.json")
+        image_dir = dataset_dir.joinpath("imgs")
+        text_data = pd.read_json(path_or_buf=text_file_path).to_dict(orient="records")
+        return text_data, image_dir
+
+    def __len__(self) -> int:
+        return len(self.text_data)
+
+    def __getitem__(self, index) -> tuple[str, Path]:
+        cur_data = self.text_data[index]
+        human_input = cur_data['conversations'][0]['value']
+        gpt_output = cur_data['conversations'][1]['value']
+        image_path = self.image_dir.joinpath(cur_data.get('image'))
+        return (human_input, gpt_output, image_path)
+
 class LlavaDataset_Train(Dataset):
     # 构造函数
     def __init__(self, dataset_dir:str) -> None:
@@ -58,7 +81,7 @@ class LlavaDataset_Train(Dataset):
         return (human_input, gpt_output, image_path)
 
 class LlavaDataset_Eval(Dataset):
-        # 构造函数
+    # 构造函数
     def __init__(self, dataset_dir:str) -> None:
         super().__init__()
         self.chat_data, self.image_dir = self.build_dataset(dataset_dir)
