@@ -28,6 +28,7 @@ import argparse
 
 # 导入读取数据集和处理数据集为向量的工具类
 from show_llava.origindata import LlavaDataset, TrainLLavaModelCollator
+from show_llava.data import N24News_LlavaDataset
 from show_llava.util import print_trainable_parameters
 
 # 导入IdCor_LlavaForConditionalGeneration
@@ -55,7 +56,7 @@ parser.add_argument('--bert_name_or_path', type=str, default='./google-bert/bert
 parser.add_argument('--data_path', type=str, default='/d/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K', help='data_path')
 parser.add_argument('--output_representation_name', type=str, default='alpha_qwen2.5_3B_Instruct_clipvL14_model', help='output_representation_name')
 parser.add_argument('--device', type=str, default='cuda:0', help='select device')
-parser.add_argument('--dataset', type=str, default='LLaVA-CC3M-Pretrain-595K', help='dataset')
+parser.add_argument('--dataset', type=str, default='LLaVA-CC3M-Pretrain-595k', help='dataset')
 
 # 指定要训练的模型路径及训练参数工具类
 @dataclass
@@ -95,12 +96,16 @@ class DataArguments:
     # target_length: int = field(default=512)
 
 def load_dataset_collator(processor, dataargs: DataArguments):
-
-    llava_dataset = LlavaDataset(
-        dataargs.data_path  # "data/liuhaotian/LLaVA-CC3M-Pretrain-595K"
-    )
+    llava_dataset = None
+    if args.dataset == "LLaVA-CC3M-Pretrain-595k":
+        llava_dataset = LlavaDataset(
+            dataargs.data_path  # "/d/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K"
+        )
+    elif args.dataset == "N24News":
+        llava_dataset = N24News_LlavaDataset(
+            dataargs.data_path  # "/d/lsy/shared_data/N24News"
+        )
     data_collator = TrainLLavaModelCollator(processor, -100)
-
     return llava_dataset, data_collator
 
 if __name__ == "__main__":
@@ -110,10 +115,6 @@ if __name__ == "__main__":
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     
-    # 创建保存text_embeds和image_embeds的文件夹
-    if not os.path.exists(f'./representation/LLaVA-CC3M-Pretrain-595K'):
-        os.makedirs(f'./representation/LLaVA-CC3M-Pretrain-595K', exist_ok=True)
-
     # 将命令行参数解析成 dataclass 对象
     args = parser.parse_args()
     print(args)
@@ -126,6 +127,10 @@ if __name__ == "__main__":
         data_path=args.data_path
     )
     device = args.device
+
+    # 创建保存text_embeds和image_embeds的文件夹
+    if not os.path.exists(f'./representation/{args.dataset}'):
+        os.makedirs(f'./representation/{args.dataset}', exist_ok=True)
 
     model, processor = load_model_processor(model_args)
     eval_dataset, data_collator = load_dataset_collator(processor, data_args)
