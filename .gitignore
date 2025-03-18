@@ -11,3 +11,5 @@ google-bert/*
 deepseek-ai/*
 representation/*
 result_model/*
+meta-llama/*
+liuhaotian/*

@@ -62,7 +62,7 @@ for temp_key in inputs.keys():
     inputs[temp_key] = inputs[temp_key].to(device)
 
 # Generate
-generate_ids = model.generate(**inputs, max_new_tokens=50)
+generate_ids = model.generate(**inputs, max_new_tokens=200)
 # 将模型生成的文本 token 序列 解码成可读的字符串形式
 response = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
 print(response)
