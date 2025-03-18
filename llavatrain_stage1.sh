@@ -11,22 +11,22 @@ deepspeed --include localhost:0,1 run_show.py \
     --dataloader_pin_memory True \
     --dataloader_num_workers 4 \
     --dataloader_persistent_workers True \
-    --output_dir ./result_model/stage1/[v2.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14 \
-    --num_train_epochs 1 \
+    --output_dir ./result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14 \
+    --num_train_epochs 3 \
     --per_device_train_batch_size 2 \
     --per_device_eval_batch_size 2 \
     --gradient_accumulation_steps 8 \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
     --evaluation_strategy "steps" \
-    --eval_steps 5000 \
+    --eval_steps 2000 \
     --save_strategy "steps" \
-    --save_steps 5000 \
-    --save_total_limit 8 \
+    --save_steps 2000 \
+    --save_total_limit 30 \
     --report_to "tensorboard" \
     --learning_rate 2e-3 \
     --logging_steps 8 \
-    --logging_dir "./train_log/[v2.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14"
+    --logging_dir "./train_log/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14"
 # --model_max_length 2048
 
 # --save_strategy "steps" \
