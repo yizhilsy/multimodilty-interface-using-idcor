@@ -50,7 +50,7 @@ for temp_key in inputs.keys():
     inputs[temp_key] = inputs[temp_key].to(device)
 
 # Generate
-generate_ids = model.generate(**inputs, 
+generate_ids = model.generate(**inputs,
                                 max_new_tokens=500,
                                 repetition_penalty=1.2
                                 )

@@ -83,7 +83,8 @@ def load_model_processor(modelargs: ModelArguments):
     if modelargs.lora_name_or_path is None:
         pass
     else:
-        model = PeftModel.from_pretrained(model, modelargs.lora_name_or_path)   # 合并lora微调模型
+        model = PeftModel.from_pretrained(model, modelargs.lora_name_or_path)   # Loading LoRA weights
+        model = model.merge_and_unload()    # Merging LoRA weights
     return model, processor
 
 # 指定数据集路径工具类
