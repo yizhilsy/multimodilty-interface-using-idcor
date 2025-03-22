@@ -14,3 +14,5 @@ IMAGE_PLACEHOLDER = "<image-placeholder>"
 
 # custom constants
 MODEL_MAX_LENGTH = 1368
+MODEL_MAX_Q_LENGTH = 768
+MODEL_MAX_A_LENGTH = 512

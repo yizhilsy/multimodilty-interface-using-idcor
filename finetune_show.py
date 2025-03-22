@@ -70,13 +70,21 @@ class DataArguments:
     eval_image_folder: str = field(
         default=None, metadata={"help": "Path to the evaluation image folder."}
     )
-    model_max_length: int = field(
+    model_max_q_length: int = field(
+        default=768,
+        metadata={
+            "help":
+            "Maximum question sequence length. Sequences will be left padded (and possibly truncated in right)."
+        },
+    )
+    model_max_a_length: int = field(
         default=512,
         metadata={
             "help":
-            "Maximum sequence length. Sequences will be left padded (and possibly truncated in right)."
+            "Maximum answer sequence length. Sequences will be left padded (and possibly truncated in right)."
         },
     )
+
     # source_length: int = field(default=128)
     # target_length: int = field(default=512)
 
@@ -185,7 +193,7 @@ def load_dataset_collator(processor, dataargs: DataArguments):
         dataargs.eval_data_path,
         dataargs.eval_image_folder
     )
-    data_collator = TrainLLavaModelCollator(processor, -100, dataargs.model_max_length)
+    data_collator = TrainLLavaModelCollator(processor, -100, dataargs.model_max_q_length, dataargs.model_max_a_length)
     return llava_finetune_dataset, llava_eval_dataset, data_collator
 
 def finetune():

@@ -9,7 +9,7 @@ from typing import List, Dict, Any, Tuple, Union, Optional
 from transformers import AutoProcessor
 from torch import Tensor
 from dataclasses import dataclass
-from .constants import IGNORE_INDEX, DEFAULT_IMAGE_TOKEN, MODEL_MAX_LENGTH
+from .constants import IGNORE_INDEX, DEFAULT_IMAGE_TOKEN, MODEL_MAX_LENGTH, MODEL_MAX_Q_LENGTH, MODEL_MAX_A_LENGTH
 
 from dataclasses import dataclass
 from torch import Tensor
@@ -100,15 +100,17 @@ def build_qaimage(processor: AutoProcessor, q_text: str, a_text: str, image_path
 
 # 定义 collator 函数
 class TrainLLavaModelCollator:
-    def __init__(self, processor: AutoProcessor, MY_IGNORE_INDEX: int, MY_MODEL_MAX_LENGTH: int) -> None:
+    def __init__(self, processor: AutoProcessor, MY_IGNORE_INDEX: int, MY_MODEL_MAX_Q_LENGTH: int, MY_MODEL_MAX_A_LENGTH: int) -> None:
         self.processor = processor
         self.ignore_index = MY_IGNORE_INDEX if MY_IGNORE_INDEX is not None else IGNORE_INDEX
-        self.model_max_length = MY_MODEL_MAX_LENGTH if MY_MODEL_MAX_LENGTH is not None else MODEL_MAX_LENGTH
+        self.model_max_q_length = MY_MODEL_MAX_Q_LENGTH if MY_MODEL_MAX_Q_LENGTH is not None else MODEL_MAX_Q_LENGTH
+        self.model_max_a_length = MY_MODEL_MAX_A_LENGTH if MY_MODEL_MAX_A_LENGTH is not None else MODEL_MAX_A_LENGTH
+        self.model_max_length = self.model_max_q_length + self.model_max_a_length
 
     # 拼接单个样本的 q_input_ids 及 a_input_ids
     def convert_one_piece(self,
                           q_input_ids: torch.Tensor,
-                          a_input_ids: torch.Tensor) -> None:
+                          a_input_ids: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         
         # 滑动窗口寻找'<|im_end|>\n'出现的位置
         def SlidingWindow(q_input_ids: torch.Tensor, STOP_SIGNAL: str) -> List[int]:
@@ -164,11 +166,24 @@ class TrainLLavaModelCollator:
                 q_input_ids=qaimage_output.q_input_ids,
                 a_input_ids=qaimage_output.a_input_ids,
             )
-            # 避免超过模型最大长度进而CUDA OUT OF MEMORY
-            if temp_input_ids.shape[1] > self.model_max_length:
-                # 为避免<image>占位符后续处理的统计错误，采取了右截断
-                temp_input_ids = temp_input_ids[:, :self.model_max_length]
-                temp_labels = temp_labels[:, :self.model_max_length]
+
+            """
+                FIXME: 设计合理的裁剪算法，必须保留q_input_ids和a_input_ids两部分。
+                避免超过模型最大长度进而CUDA OUT OF MEMORY且保证labels不全为ignore_index
+                为避免<image>占位符后续处理的统计错误, 采取了右截断, 后续可以考虑对a_input_ids进行左截断
+            """
+            q_input_length = qaimage_output.q_input_ids.shape[1]
+            a_input_length = qaimage_output.a_input_ids.shape[1]
+            if temp_input_ids.shape[1] - 1 > self.model_max_length: # temp_input_ids末尾有一个eos_token
+                if self.model_max_q_length + a_input_length <= self.model_max_length:   # q_input_ids长度过长导致超过model_max_length
+                    temp_input_ids = torch.cat((temp_input_ids[:, :self.model_max_q_length], temp_input_ids[:, q_input_length:]), dim=1)
+                    temp_labels = torch.cat((temp_labels[:, :self.model_max_q_length], temp_labels[:, q_input_length:]), dim=1)
+                elif q_input_length + self.model_max_a_length <= self.model_max_length: # a_input_ids长度过长导致超过model_max_length
+                    temp_input_ids = torch.cat((temp_input_ids[:, :q_input_length + self.model_max_a_length], temp_input_ids[:, -1:]), dim=1)
+                    temp_labels = torch.cat((temp_labels[:, :q_input_length + self.model_max_a_length], temp_labels[:, -1:]), dim=1)
+                else:       # q_input_ids和a_input_ids长度都过长导致超过model_max_length
+                    temp_input_ids = torch.cat((temp_input_ids[:, :self.model_max_q_length], temp_input_ids[:, q_input_length:q_input_length + self.model_max_a_length], temp_input_ids[:, -1:]), dim=1)
+                    temp_labels = torch.cat((temp_labels[:, :self.model_max_q_length], temp_labels[:, q_input_length:q_input_length + self.model_max_a_length], temp_labels[:, -1:]), dim=1)
 
             input_ids_list.append(temp_input_ids)
             labels_list.append(temp_labels)
@@ -198,7 +213,8 @@ class TrainLLavaModelCollator:
         attention_mask = torch.ones_like(final_input_ids)
         # 因对齐而造成的填充部分 attention_mask 置 0
         attention_mask[final_input_ids == self.processor.tokenizer.pad_token_id] = 0
-        for batch_idx, is_multimodal in enumerate(is_multimodal_list):  # 处理非多模态数据的图片占位符
+        # 处理非多模态数据的图片占位符
+        for batch_idx, is_multimodal in enumerate(is_multimodal_list):
             if not is_multimodal:
                 non_multimodal_image_pad_mask = (final_input_ids[batch_idx] == self.processor.tokenizer.encode(DEFAULT_IMAGE_TOKEN)[0])
                 non_multimodal_image_pad_mask.to(attention_mask.device)
