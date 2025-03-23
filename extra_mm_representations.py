@@ -194,5 +194,5 @@ if __name__ == "__main__":
     logging.info(f"all_text_embeds shape: {all_text_embeds.shape}")
     logging.info(f"all_image_embeds shape: {all_image_embeds.shape}")
 
-    torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_text.pt')
-    torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_image.pt')
+    torch.save(all_text_embeds, f'/d/lsy/pythonworkspace/llava_test/representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_text.pt')
+    torch.save(all_image_embeds, f'/d/lsy/pythonworkspace/llava_test/representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_image.pt')
