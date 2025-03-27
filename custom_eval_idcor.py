@@ -44,19 +44,18 @@ current_file_directory = os.path.dirname(os.path.abspath(__file__))
 # 设置为 python 脚本当前所在的目录
 os.chdir(current_file_directory)
 
-# 指定gpu
-device = "cuda:0"
 # 初始化日志
 logger = logging.getLogger(__name__)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model_name_or_path', type=str, default='./result_model/stage1/[v2.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-5000', help='model_name_or_path')
+parser.add_argument('--model_name_or_path', type=str, default='./qwen2.5_3B_Instruct_clipvL14_model/model001', help='model_name_or_path')
 parser.add_argument('--lora_name_or_path', type=str, default=None, help='lora_name_or_path')
 parser.add_argument('--bert_name_or_path', type=str, default='./google-bert/bert-base-uncased', help='bert_name_or_path')
 parser.add_argument('--data_path', type=str, default='/d/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K', help='data_path')
-parser.add_argument('--output_representation_name', type=str, default='alpha_qwen2.5_3B_Instruct_clipvL14_model', help='output_representation_name')
+parser.add_argument('--output_representation_name', type=str, default='noaligned_qwen2.5_3B_Instruct_clipvL14_model', help='output_representation_name')
 parser.add_argument('--device', type=str, default='cuda:0', help='select device')
-parser.add_argument('--dataset', type=str, default='LLaVA-CC3M-Pretrain-595k', help='dataset')
+parser.add_argument('--dataset', type=str, default='LLaVA-CC3M-Pretrain-595K', help='dataset')
+parser.add_argument('--subversion', type=str, default='v1', help='version sub the dataset(dataset/subversion)')
 
 # 指定要训练的模型路径及训练参数工具类
 @dataclass
@@ -67,6 +66,17 @@ class ModelArguments:
     lora_name_or_path: Optional[str] = field(default="./output_model_lora_show/[epoch4-5]qwen2.5_3B_Instruct_clipvL14")
     # bert 预训练模型路径
     bert_name_or_path: Optional[str] = field(default="./google-bert/bert-base-uncased")
+    # model 载入的gpu设备
+    device: Optional[str] = field(default="cuda:0")
+
+# 指定数据集路径工具类
+@dataclass
+class DataArguments:
+    data_path: str = field(
+        default=None, metadata={"help": "Path to the training data."}
+    )
+    # source_length: int = field(default=128)
+    # target_length: int = field(default=512)
 
 def load_model_processor(modelargs: ModelArguments):
     # 读取模型
@@ -74,7 +84,7 @@ def load_model_processor(modelargs: ModelArguments):
         modelargs.model_name_or_path,
         torch_dtype=torch.bfloat16,
         low_cpu_mem_usage=True,
-        device_map=device,
+        device_map=modelargs.device,
         pretrained_bert_name_or_path = modelargs.bert_name_or_path
     )
     # 加载processor处理器
@@ -87,20 +97,11 @@ def load_model_processor(modelargs: ModelArguments):
         model = model.merge_and_unload()    # Merging LoRA weights
     return model, processor
 
-# 指定数据集路径工具类
-@dataclass
-class DataArguments:
-    data_path: str = field(
-        default=None, metadata={"help": "Path to the training data."}
-    )
-    # source_length: int = field(default=128)
-    # target_length: int = field(default=512)
-
 def load_dataset_collator(processor, dataargs: DataArguments):
     llava_dataset = None
-    if args.dataset == "LLaVA-CC3M-Pretrain-595k":
+    if args.dataset == "LLaVA-CC3M-Pretrain-595K":
         llava_dataset = LlavaDataset(
-            dataargs.data_path  # "/d/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K"
+            dataargs.data_path,  # "/d/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K"
         )
     elif args.dataset == "N24News":
         llava_dataset = N24News_LlavaDataset(
@@ -122,19 +123,19 @@ if __name__ == "__main__":
     model_args = ModelArguments(
         model_name_or_path=args.model_name_or_path,
         lora_name_or_path=args.lora_name_or_path,
-        bert_name_or_path=args.bert_name_or_path
+        bert_name_or_path=args.bert_name_or_path,
+        device=args.device
     )
     data_args = DataArguments(
-        data_path=args.data_path
+        data_path=args.data_path,
     )
-    device = args.device
 
     # 创建保存text_embeds和image_embeds的文件夹
-    if not os.path.exists(f'./representation/{args.dataset}'):
-        os.makedirs(f'./representation/{args.dataset}', exist_ok=True)
+    if not os.path.exists(f'./representation/{args.dataset}/{args.subversion}'):
+        os.makedirs(f'./representation/{args.dataset}/{args.subversion}', exist_ok=True)
 
-    model, processor = load_model_processor(model_args)
-    eval_dataset, data_collator = load_dataset_collator(processor, data_args)
+    model, processor = load_model_processor(modelargs=model_args)
+    eval_dataset, data_collator = load_dataset_collator(processor=processor, dataargs=data_args)
     dataloader_params = {
         "batch_size": 128,
         "collate_fn": data_collator,
@@ -149,9 +150,9 @@ if __name__ == "__main__":
         all_text_embeds = []
         all_image_embeds = []
         for steps, inputs in tqdm(enumerate(eval_dataloader)):
-            input_ids = inputs["input_ids"].to(device)
-            pixel_values = inputs["pixel_values"].to(device)
-            attention_mask = inputs["attention_mask"].to(device)
+            input_ids = inputs["input_ids"].to(model_args.device)
+            pixel_values = inputs["pixel_values"].to(model_args.device)
+            attention_mask = inputs["attention_mask"].to(model_args.device)
             human_input = inputs["human_input"]
 
             # 调用IdCor_LlavaForConditionalGeneration加载的模型新增的extra_imageAndtext_embeddings方法
@@ -182,5 +183,5 @@ if __name__ == "__main__":
     logging.info(f"all_text_embeds shape: {all_text_embeds.shape}")
     logging.info(f"all_image_embeds shape: {all_image_embeds.shape}")
 
-    torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.output_representation_name}_text.pt')
-    torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.output_representation_name}_image.pt')
+    torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_text.pt')
+    torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_image.pt')
