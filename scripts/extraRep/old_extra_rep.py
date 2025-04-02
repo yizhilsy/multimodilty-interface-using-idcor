@@ -2,15 +2,8 @@ import subprocess
 import concurrent.futures
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Tuple
-import json, os
+import json, os, time
 import argparse
-
-# 获取脚本所在的目录
-current_file_directory = os.path.dirname(os.path.abspath(__file__))
-# 设置为 python 脚本当前所在的目录
-os.chdir(current_file_directory)
-
-file_name_or_path = None
 
 @dataclass
 class ExtraConfig:
@@ -20,11 +13,11 @@ class ExtraConfig:
     lora_name_or_path: str = field(
         default=None, metadata={"help": "Lora model path"}
     )
+    bert_name_or_path: str = field(
+        default=None, metadata={"help": "Bert model path"}
+    )
     data_path: str = field(
         default='/home/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K/chat.json', metadata={"help": "data_path for conversation data"}
-    )
-    image_folder: str = field(
-        default='/home/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K/images_dl', metadata={"help": "multi-modal image folder"}
     )
     output_representation_name: str = field(
         default='trainjson_ck2000_qwen2.5_3B_Instruct_clipvL14_model', metadata={"help": "output_representation_name"}
@@ -35,12 +28,6 @@ class ExtraConfig:
     dataset: str = field(
         default='LLaVA-CC3M-Pretrain-595K', metadata={"help": "dataset"}
     )
-    model_max_q_length: int = field(
-        default=768, metadata={"help": "model_max_q_length"}
-    )
-    model_max_a_length: int = field(
-        default=512, metadata={"help": "model_max_a_length"}
-    )
     subversion: str = field(
         default='v1', metadata={"help": "version sub the dataset(dataset/subversion)"}
     )
@@ -48,38 +35,33 @@ class ExtraConfig:
 
 def run_extra_rep(extra_config: ExtraConfig):
     command = []
-    if extra_config.lora_name_or_path is not None:  # 有lora微调适配参数
+    if extra_config.lora_name_or_path is not None:
         command = [
-            "python", "../../extra_mm_representations.py",
+            "python", "/home/lsy/workspace/llava_test/custom_eval_idcor.py",
             "--model_name_or_path", extra_config.model_name_or_path,
             "--lora_name_or_path", extra_config.lora_name_or_path,
+            "--bert_name_or_path", extra_config.bert_name_or_path,
             "--data_path", extra_config.data_path,
-            "--image_folder", extra_config.image_folder,
             "--output_representation_name", extra_config.output_representation_name,
             "--device", extra_config.device,
             "--dataset", extra_config.dataset,
-            "--model_max_q_length", str(extra_config.model_max_q_length),
-            "--model_max_a_length", str(extra_config.model_max_a_length),
             "--subversion", extra_config.subversion
         ]
-    else:   # 无lora微调适配参数
+    else:
         command = [
-            "python", file_name_or_path,
+            "python", "/home/lsy/workspace/llava_test/custom_eval_idcor.py",
             "--model_name_or_path", extra_config.model_name_or_path,
+            "--bert_name_or_path", extra_config.bert_name_or_path,
             "--data_path", extra_config.data_path,
-            "--image_folder", extra_config.image_folder,
             "--output_representation_name", extra_config.output_representation_name,
             "--device", extra_config.device,
             "--dataset", extra_config.dataset,
-            "--model_max_q_length", str(extra_config.model_max_q_length),
-            "--model_max_a_length", str(extra_config.model_max_a_length),
             "--subversion", extra_config.subversion
         ]
-
-    script_dir = os.path.dirname(os.path.abspath(file_name_or_path))    # 获取实际工作脚本所在的目录
 
     print(f"Running extra_representations command: {command}")
-    subprocess.run(command, cwd=script_dir) # 子进程在实际工作脚本所在的目录下执行command命令
+    time.sleep(16)
+    subprocess.run(command)
 
 def ThreadPool_Execute(num_workers: int, extraconfig_list: List[ExtraConfig]):
     # 使用线程池并行执行num_workers个任务
@@ -98,14 +80,12 @@ def ThreadPool_Execute(num_workers: int, extraconfig_list: List[ExtraConfig]):
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--extra-configs", type=str, default="./eval-configs2k_to_50k.json", help="Path to the eval config's json file.")
+    parser.add_argument("--extra-configs", type=str, default="./oldextra-configs2k_to_50k.json", help="Path to the eval config's json file.")
     args = parser.parse_args()
     with open(args.extra_configs) as extra_config_file:
         configs = json.load(extra_config_file)
 
-    file_name_or_path = configs['file_name_or_path']
     data_path = configs['data-path']
-    image_folder = configs['image-folder']
     dataset = configs['dataset']
     subversion = configs['subversion']
     models = configs['models']
@@ -115,13 +95,11 @@ if __name__ == "__main__":
         extraconfig_list.append(ExtraConfig(
                                           model_name_or_path=model['model_name_or_path'],
                                           lora_name_or_path=model['lora_name_or_path'] if 'lora_name_or_path' in model else None,
+                                          bert_name_or_path=model['bert_name_or_path'],
                                           data_path=data_path,
-                                          image_folder=image_folder,
                                           output_representation_name=model['output_representation_name'],
                                           device=model['device'],
                                           dataset=dataset,
-                                          model_max_q_length=model['model_max_q_length'],
-                                          model_max_a_length=model['model_max_a_length'],
                                           subversion=subversion
                                           ))
     

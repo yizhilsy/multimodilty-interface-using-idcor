@@ -21,7 +21,7 @@ class EvalConfig:
     )
 
 
-def run_inference(eval_config: EvalConfig):
+def run_eval_statistics(eval_config: EvalConfig):
     command = [
         "python", "/home/lsy/workspace/papercode/LLaVA/llava/eval/eval_science_qa.py",
         "--base-dir", eval_config.base_dir,
@@ -29,7 +29,7 @@ def run_inference(eval_config: EvalConfig):
         "--output-file", eval_config.output_file,
         "--output-result", eval_config.output_result
     ]
-    print(f"Running inference command: {command}")
+    print(f"Running eval_statistics command: {command}")
     subprocess.run(command)
 
 def ThreadPool_Execute(num_workers: int, evalconfig_list: List[EvalConfig]):
@@ -38,7 +38,7 @@ def ThreadPool_Execute(num_workers: int, evalconfig_list: List[EvalConfig]):
         futures = []
 
         for eval_config in evalconfig_list:
-            future = executor.submit(run_inference, eval_config)   # 向线程池提交模型推理任务
+            future = executor.submit(run_eval_statistics, eval_config)   # 向线程池提交模型推理任务
             futures.append(future)  # 追加到任务状态列表
         
         for future in concurrent.futures.as_completed(futures):

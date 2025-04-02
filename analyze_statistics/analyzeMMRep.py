@@ -21,6 +21,7 @@ def analyze_corr_rep(textRepPath: str, imageRepPath: str, batch_size: int, id_al
     data_list = [idcor_list, text_id_list, image_id_list, p_list, merge_id_list]
     # 绘制柱状图并打印
     draw_corr_columnar_distribution(bin_start_list, bin_end_list, bin_width_list, data_list, name_list, color_list, xlabel_list, batch_size)
+    
 
 @dataclass
 class CorrelationResult:
@@ -54,7 +55,7 @@ def correlation_compute(textRepPath: str, imageRepPath: str, batch_size: int, id
         merge_id_list=merge_id_list
     )
 
-def draw_corr_columnar_distribution(bin_start_list: List[int], bin_end_list: List[int], bin_width_list: List[int], data_list: List[List[float]], name_list: List[str], color_list: List[str], xlabel_list: List[str], batch_size: int):
+def draw_corr_columnar_distribution(bin_start_list: List[float], bin_end_list: List[float], bin_width_list: List[float], data_list: List[List[float]], name_list: List[str], color_list: List[str], xlabel_list: List[str], batch_size: int):
     fig, axs = plt.subplots(2, 3, figsize=(25, 20))  # 创建一个包含 2 行 3 列子图的图形
     fig.tight_layout(pad=6.0)  # 子图之间的间距
     for i, ax in enumerate(axs.flat):  # axs.flat 会将二维子图展平，便于迭代
@@ -62,6 +63,8 @@ def draw_corr_columnar_distribution(bin_start_list: List[int], bin_end_list: Lis
             bins = np.arange(bin_start_list[i], bin_end_list[i] + bin_width_list[i], bin_width_list[i])  # 使用numpy的histogram函数来分割数据
             hist, bin_edges = np.histogram(data_list[i], bins=bins)
             
+            # 计算各项指标的期望
+            expectation_numeric = expectation_compute(data_list[i], bin_start_list[i], bin_end_list[i], bin_width_list[i])
             # 绘制柱状图
             ax.bar(bin_edges[:-1], hist, width=bin_width_list[i], align='edge', edgecolor='black', color=color_list[i])
             
@@ -80,7 +83,19 @@ def draw_corr_columnar_distribution(bin_start_list: List[int], bin_end_list: Lis
                 if hist[j] > 0:  # 只对频率大于0的柱子标识
                     ax.text(bin_edges[j] + bin_width_list[i] / 2, hist[j], str(hist[j]), ha='center', va='bottom', fontsize=9, color='black')
             
-            ax.legend([f'{name_list[i]} freq'], loc='upper right', fontsize=8)  # 添加图例
+            ax.legend([f'{name_list[i]} freq\nExpectation: {expectation_numeric:.2f}'], loc='upper right', fontsize=12)  # 添加图例
 
     fig.delaxes(axs[1, 2])  # 删除右下角的空白子图
     plt.show()
+
+def expectation_compute(corrnorm_list: List[float], bin_start: float, bin_end: float, bin_width: float):
+    bins = np.arange(bin_start, bin_end + bin_width, bin_width)
+    hist, bin_edges = np.histogram(corrnorm_list, bins=bins)
+
+    #compute expectation numeric
+    expectation_numeric: float = 0.0
+    for i, hist_value in enumerate(hist):
+        frequency = hist_value / len(corrnorm_list)
+        expectation_numeric += frequency * (bin_edges[i] + (bin_width / 2))
+    
+    return expectation_numeric
