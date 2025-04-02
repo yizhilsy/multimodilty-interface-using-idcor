@@ -1,0 +1,16 @@
+{
+    "file_name_or_path": "/home/lsy/workspace/llava_test/extra_mm_representations.py",
+    "data-path": "/home/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K/chat.json",
+    "image-folder": "/home/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K/images_dl",
+    "dataset": "LLaVA-CC3M-Pretrain-595K",
+    "subversion": "v2",
+    "models": [
+        {
+            "model_name_or_path": "./qwen2.5_3B_Instruct_clipvL14_model/model001",  
+            "output_representation_name": "noaligned_qwen2.5_3B_Instruct_clipvL14_model",
+            "device": "cuda:0",
+            "model_max_q_length": 768,
+            "model_max_a_length": 512
+        }
+    ]
+}

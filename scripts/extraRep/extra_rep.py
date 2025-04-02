@@ -5,6 +5,13 @@ from typing import List, Dict, Any, Tuple
 import json, os
 import argparse
 
+# 获取脚本所在的目录
+current_file_directory = os.path.dirname(os.path.abspath(__file__))
+# 设置为 python 脚本当前所在的目录
+os.chdir(current_file_directory)
+
+file_name_or_path = None
+
 @dataclass
 class ExtraConfig:
     model_name_or_path: str = field(
@@ -39,22 +46,40 @@ class ExtraConfig:
     )
 
 
-def run_inference(extra_config: ExtraConfig):
-    command = [
-        "python", "/d/lsy/pythonworkspace/llava_test/extra_mm_representations.py",
-        "--model_name_or_path", extra_config.model_name_or_path,
-        "--lora_name_or_path", extra_config.lora_name_or_path,
-        "--data_path", extra_config.data_path,
-        "--image_folder", extra_config.image_folder,
-        "--output_representation_name", extra_config.output_representation_name,
-        "--device", extra_config.device,
-        "--dataset", extra_config.dataset,
-        "--model_max_q_length", str(extra_config.model_max_q_length),
-        "--model_max_a_length", str(extra_config.model_max_a_length),
-        "--subversion", extra_config.subversion
-    ]
-    print(f"Running inference command: {command}")
-    subprocess.run(command)
+def run_extra_rep(extra_config: ExtraConfig):
+    command = []
+    if extra_config.lora_name_or_path is not None:  # 有lora微调适配参数
+        command = [
+            "python", "../../extra_mm_representations.py",
+            "--model_name_or_path", extra_config.model_name_or_path,
+            "--lora_name_or_path", extra_config.lora_name_or_path,
+            "--data_path", extra_config.data_path,
+            "--image_folder", extra_config.image_folder,
+            "--output_representation_name", extra_config.output_representation_name,
+            "--device", extra_config.device,
+            "--dataset", extra_config.dataset,
+            "--model_max_q_length", str(extra_config.model_max_q_length),
+            "--model_max_a_length", str(extra_config.model_max_a_length),
+            "--subversion", extra_config.subversion
+        ]
+    else:   # 无lora微调适配参数
+        command = [
+            "python", file_name_or_path,
+            "--model_name_or_path", extra_config.model_name_or_path,
+            "--data_path", extra_config.data_path,
+            "--image_folder", extra_config.image_folder,
+            "--output_representation_name", extra_config.output_representation_name,
+            "--device", extra_config.device,
+            "--dataset", extra_config.dataset,
+            "--model_max_q_length", str(extra_config.model_max_q_length),
+            "--model_max_a_length", str(extra_config.model_max_a_length),
+            "--subversion", extra_config.subversion
+        ]
+
+    script_dir = os.path.dirname(os.path.abspath(file_name_or_path))    # 获取实际工作脚本所在的目录
+
+    print(f"Running extra_representations command: {command}")
+    subprocess.run(command, cwd=script_dir) # 子进程在实际工作脚本所在的目录下执行command命令
 
 def ThreadPool_Execute(num_workers: int, extraconfig_list: List[ExtraConfig]):
     # 使用线程池并行执行num_workers个任务
@@ -62,7 +87,7 @@ def ThreadPool_Execute(num_workers: int, extraconfig_list: List[ExtraConfig]):
         futures = []
 
         for extra_config in extraconfig_list:
-            future = executor.submit(run_inference, extra_config)   # 向线程池提交模型推理任务
+            future = executor.submit(run_extra_rep, extra_config)   # 向线程池提交模型推理任务
             futures.append(future)  # 追加到任务状态列表
         
         for future in concurrent.futures.as_completed(futures):
@@ -78,6 +103,7 @@ if __name__ == "__main__":
     with open(args.extra_configs) as extra_config_file:
         configs = json.load(extra_config_file)
 
+    file_name_or_path = configs['file_name_or_path']
     data_path = configs['data-path']
     image_folder = configs['image-folder']
     dataset = configs['dataset']
@@ -88,7 +114,7 @@ if __name__ == "__main__":
     for model in models:
         extraconfig_list.append(ExtraConfig(
                                           model_name_or_path=model['model_name_or_path'],
-                                          lora_name_or_path=model['lora_name_or_path'],
+                                          lora_name_or_path=model['lora_name_or_path'] if 'lora_name_or_path' in model else None,
                                           data_path=data_path,
                                           image_folder=image_folder,
                                           output_representation_name=model['output_representation_name'],
@@ -99,7 +125,7 @@ if __name__ == "__main__":
                                           subversion=subversion
                                           ))
     
-    ThreadPool_Execute(2, extraconfig_list=extraconfig_list)
+    ThreadPool_Execute(1, extraconfig_list=extraconfig_list)
     
 
     

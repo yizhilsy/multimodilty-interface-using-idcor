@@ -110,6 +110,7 @@ class IdCor_nobert_LlavaForConditionalGeneration(LlavaForConditionalGeneration):
             final_text_mean_embeds = torch.stack(final_text_mean_embeds, dim=0) # 组织成(batch_size, embeddings)形状的张量
             
             final_text_mean_embeds.to(device)
+            # nopad_final_text_embeds_list = [nopad_final_text_embeds.to(device) for nopad_final_text_embeds in nopad_final_text_embeds_list]
             text_embeds = torch.empty(0, final_text_mean_embeds.shape[-1], device=device)
 
             # attention compute!

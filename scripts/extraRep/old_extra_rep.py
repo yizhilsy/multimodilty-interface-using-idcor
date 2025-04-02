@@ -2,7 +2,8 @@ import subprocess
 import concurrent.futures
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Tuple
-import json, os
+
+import json, os, time
 import argparse
 
 @dataclass
@@ -60,6 +61,7 @@ def run_extra_rep(extra_config: ExtraConfig):
         ]
 
     print(f"Running extra_representations command: {command}")
+    time.sleep(16)
     subprocess.run(command)
 
 def ThreadPool_Execute(num_workers: int, extraconfig_list: List[ExtraConfig]):

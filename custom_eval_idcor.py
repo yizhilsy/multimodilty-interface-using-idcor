@@ -131,8 +131,8 @@ if __name__ == "__main__":
     )
 
     # 创建保存text_embeds和image_embeds的文件夹
-    if not os.path.exists(f'./representation/{args.dataset}/{args.subversion}'):
-        os.makedirs(f'./representation/{args.dataset}/{args.subversion}', exist_ok=True)
+    if not os.path.exists(f'./representation/{args.dataset}/oldextra/{args.subversion}'):
+        os.makedirs(f'./representation/{args.dataset}/oldextra/{args.subversion}', exist_ok=True)
 
     model, processor = load_model_processor(modelargs=model_args)
     eval_dataset, data_collator = load_dataset_collator(processor=processor, dataargs=data_args)
@@ -145,6 +145,7 @@ if __name__ == "__main__":
         "shuffle": False
     }
     eval_dataloader = DataLoader(eval_dataset, **dataloader_params)
+    chop_threshold: int = (len(eval_dataset) // dataloader_params["batch_size"]) // 2
     model.eval()
     with torch.no_grad():
         all_text_embeds = []
@@ -169,12 +170,26 @@ if __name__ == "__main__":
             text_embeds = image_and_text_embeddings.text_embeds
             
             # test 粗略计算一下idcor
-            corr = id_correlation(text_embeds.to(torch.float32), image_embeds.to(torch.float32), 100, 'twoNN')
-            logging.info(f"corr: {corr}")
+            # corr = id_correlation(text_embeds.to(torch.float32), image_embeds.to(torch.float32), 100, 'twoNN')
+            # logging.info(f"corr: {corr}")
 
             # 保存每个batch_size的image_embeds和text_embeds
             all_text_embeds.append(text_embeds.detach().cpu())
             all_image_embeds.append(image_embeds.detach().cpu())
+
+            if steps == chop_threshold:
+                all_text_embeds = torch.cat(all_text_embeds, dim=0)
+                all_image_embeds = torch.cat(all_image_embeds, dim=0)
+                logging.info(f"all_text_embeds shape: {all_text_embeds.shape}")
+                logging.info(f"all_image_embeds shape: {all_image_embeds.shape}")
+                try:
+                    torch.save(all_text_embeds, f'./representation/{args.dataset}/oldextra/{args.subversion}/{args.output_representation_name}_text_1.pt')
+                    torch.save(all_image_embeds, f'./representation/{args.dataset}/oldextra/{args.subversion}/{args.output_representation_name}_image_1.pt')
+                    print("first represention torch saved successfully.")
+                except Exception as e:
+                    print(f"Error occurred while saving files: {e}")
+                all_text_embeds = []
+                all_image_embeds = []
 
     # 将所有的image_embeds和text_embeds拼接起来
     all_text_embeds = torch.cat(all_text_embeds, dim=0)
@@ -183,5 +198,9 @@ if __name__ == "__main__":
     logging.info(f"all_text_embeds shape: {all_text_embeds.shape}")
     logging.info(f"all_image_embeds shape: {all_image_embeds.shape}")
 
-    torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_text.pt')
-    torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_image.pt')
+    try:
+        torch.save(all_text_embeds, f'./representation/{args.dataset}/oldextra/{args.subversion}/{args.output_representation_name}_text_2.pt')
+        torch.save(all_image_embeds, f'./representation/{args.dataset}/oldextra/{args.subversion}/{args.output_representation_name}_image_2.pt')
+        print("second represention torch saved successfully.")
+    except Exception as e:
+        print(f"Error occurred while saving files: {e}")
