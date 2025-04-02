@@ -17,3 +17,7 @@ playground/*
 
 # Python
 __pycache__
+
+# logs
+scripts/extraRep/extra-representations2k_to_50k.log
+scripts/extraRep/oldextra-representations0k_to_50k.log
