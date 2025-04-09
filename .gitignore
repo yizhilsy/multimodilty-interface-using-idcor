@@ -5,7 +5,6 @@ show_model/*
 output_model_lora_show/*
 mini_model/*
 historyevents/*
-train_log/*
 qwen2.5_3B_Instruct_clipvL14_model/*
 google-bert/*
 deepseek-ai/*
@@ -16,9 +15,11 @@ liuhaotian/*
 playground/*
 scripts/test/*
 
+# log dict
+terminal_log/*
+train_log/*
+log/*
+
 # Python
 __pycache__
 
-# logs
-scripts/extraRep/extra-representations2k_to_50k.log
-scripts/extraRep/oldextra-representations0k_to_50k.log
