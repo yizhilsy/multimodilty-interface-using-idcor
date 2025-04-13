@@ -1,0 +1,159 @@
+{
+    "batch_size": 256,
+    "id_alg": "twoNN",
+    "shuffleN": 100,
+    "bin_start_list": [
+        0.0, 0.0, 0.0, 0.0, 0.0
+    ],
+    "bin_end_list": [
+        1.0, 5.0, 40.0, 1.0, 30.0
+    ],
+    "bin_width_list": [
+        0.05, 1.0, 4.0, 0.05, 3.0
+    ],
+    "name_list": [
+        "idcor", "text_id", "image_id", "p", "merge_id"
+    ],
+    "color_list": [
+        "red", "green", "yellow", "blue", "pink"
+    ],
+    "xlabel_list": [
+        "idcor with text_embeds and image_embeds Interval",
+        "id for text_embeds Interval",
+        "id for image_embeds Interval",
+        "pvalues with corr of text_embeds and image_embeds Interval",
+        "merge_id with text_embeds and image_embeds Interval"
+    ],
+    "save_folder": "../../result_imgs/oldextraalg/LLaVA-CC3M-Pretrain-595K/finetune",
+    "mm_rep_paths": [
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/noaligned_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/noaligned_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck2000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck2000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck4000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck4000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck6000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck6000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck8000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck8000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck10000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck10000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck12000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck12000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck14000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck14000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck16000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck16000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck18000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck18000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck20000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck20000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck22000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck22000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck24000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck24000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck26000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck26000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck28000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck28000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck30000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck30000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck32000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck32000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck34000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck34000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck36000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck36000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck38000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck38000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck40000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck40000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck42000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck42000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck44000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck44000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck46000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck46000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck48000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck48000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        },
+        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck50000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck50000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        }
+    ]
+}

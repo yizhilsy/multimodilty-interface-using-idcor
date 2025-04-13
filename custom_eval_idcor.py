@@ -137,7 +137,7 @@ if __name__ == "__main__":
     model, processor = load_model_processor(modelargs=model_args)
     eval_dataset, data_collator = load_dataset_collator(processor=processor, dataargs=data_args)
     dataloader_params = {
-        "batch_size": 128,
+        "batch_size": 192, # 128
         "collate_fn": data_collator,
         "num_workers": 4,
         "pin_memory": True,

@@ -34,18 +34,33 @@ class InferenceConfig:
 
 
 def run_inference(inference_config: InferenceConfig):
-    command = [
-        "python", "/d/lsy/pythonworkspace/papercode/LLaVA/llava/eval/model_vqa_science_exp1.py",
-        "--model-path", inference_config.model_path,
-        "--lora-path", inference_config.lora_path,
-        "--device", inference_config.device,
-        "--question-file", inference_config.question_file,
-        "--image-folder", inference_config.image_folder,
-        "--answers-file", inference_config.answers_file,
-        "--single-pred-prompt",
-        "--temperature", str(inference_config.temperature),
-        "--conv-mode", inference_config.conv_mode
-    ]
+    command = None
+    if inference_config.lora_path is not None:
+        command = [
+            "python", "/home/lsy/workspace/papercode/LLaVA/llava/eval/model_vqa_science_exp1.py",
+            "--model-path", inference_config.model_path,
+            "--lora-path", inference_config.lora_path,
+            "--device", inference_config.device,
+            "--question-file", inference_config.question_file,
+            "--image-folder", inference_config.image_folder,
+            "--answers-file", inference_config.answers_file,
+            "--single-pred-prompt",
+            "--temperature", str(inference_config.temperature),
+            "--conv-mode", inference_config.conv_mode
+        ]
+    else:
+        command = [
+            "python", "/home/lsy/workspace/papercode/LLaVA/llava/eval/model_vqa_science_exp1.py",
+            "--model-path", inference_config.model_path,
+            "--device", inference_config.device,
+            "--question-file", inference_config.question_file,
+            "--image-folder", inference_config.image_folder,
+            "--answers-file", inference_config.answers_file,
+            "--single-pred-prompt",
+            "--temperature", str(inference_config.temperature),
+            "--conv-mode", inference_config.conv_mode
+        ]
+
     print(f"Running inference command: {command}")
     subprocess.run(command)
 
@@ -80,7 +95,7 @@ if __name__ == "__main__":
     inferenceconfig_list: List[InferenceConfig] = []
     for model in models:
         inferenceconfig_list.append(InferenceConfig(model_path=model['model-path'],
-                                                    lora_path=model['lora-path'],
+                                                    lora_path=model['lora-path'] if 'lora-path' in model else None,
                                                     device=model['device'],
                                                     question_file=question_file,
                                                     image_folder=image_folder,
@@ -88,7 +103,7 @@ if __name__ == "__main__":
                                                     temperature=model['temperature'],
                                                     conv_mode=model['conv-mode']))
     
-    ThreadPool_Execute(4, inferenceconfig_list=inferenceconfig_list)
+    ThreadPool_Execute(1, inferenceconfig_list=inferenceconfig_list)
     
 
     

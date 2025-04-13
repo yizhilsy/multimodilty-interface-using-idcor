@@ -9,9 +9,12 @@ from typing import List, Dict, Any, Tuple
 # 绘图库
 from matplotlib import pyplot as plt
 import numpy as np
+import os
 
 def analyze_corr_rep(textRepPath: str, imageRepPath: str, batch_size: int, id_alg: str, shuffleN: int,
-                     bin_start_list: List[int], bin_end_list: List[int], bin_width_list: List[int], name_list: List[str], color_list: List[str], xlabel_list: List[str]):
+                     bin_start_list: List[int], bin_end_list: List[int], bin_width_list: List[int], name_list: List[str], color_list: List[str], xlabel_list: List[str],
+                     save_folder: str = None):
+    # integral_corr = integralRepcorr_compute(textRepPath=textRepPath, imageRepPath=imageRepPath, id_alg=id_alg, shuffleN=shuffleN)
     corr: CorrelationResult = correlation_compute(textRepPath, imageRepPath, batch_size, id_alg, shuffleN)
     text_id_list = corr.text_id_list
     image_id_list = corr.image_id_list
@@ -19,9 +22,20 @@ def analyze_corr_rep(textRepPath: str, imageRepPath: str, batch_size: int, id_al
     p_list = corr.p_list
     merge_id_list = corr.merge_id_list
     data_list = [idcor_list, text_id_list, image_id_list, p_list, merge_id_list]
+    figure_name = textRepPath.split("/")[-1].rsplit('_text.pt', 1)[0]
     # 绘制柱状图并打印
-    draw_corr_columnar_distribution(bin_start_list, bin_end_list, bin_width_list, data_list, name_list, color_list, xlabel_list, batch_size)
-    
+    draw_corr_columnar_distribution(bin_start_list, bin_end_list, bin_width_list, data_list, 
+                                    name_list, color_list, xlabel_list, batch_size, figure_name, save_folder)
+
+"""
+    NOTE 计算在验证多模态对齐的数据集上不同模态表征的总体corr numeric（一种非切分计算指标分布的方法）
+    HACK 当验证多模态对齐的数据集很庞大时, 会要求难以承受的显存和内存开销, 因此会导致显存/内存溢出
+"""
+def integralRepcorr_compute(textRepPath: str, imageRepPath: str, id_alg: str, shuffleN: int) -> Any:
+    text_reps = torch.load(textRepPath)
+    image_reps = torch.load(imageRepPath)
+    integral_corr = id_correlation(text_reps.to(torch.float32), image_reps.to(torch.float32), shuffleN, id_alg)
+    return integral_corr
 
 @dataclass
 class CorrelationResult:
@@ -55,7 +69,8 @@ def correlation_compute(textRepPath: str, imageRepPath: str, batch_size: int, id
         merge_id_list=merge_id_list
     )
 
-def draw_corr_columnar_distribution(bin_start_list: List[float], bin_end_list: List[float], bin_width_list: List[float], data_list: List[List[float]], name_list: List[str], color_list: List[str], xlabel_list: List[str], batch_size: int):
+def draw_corr_columnar_distribution(bin_start_list: List[float], bin_end_list: List[float], bin_width_list: List[float], data_list: List[List[float]],
+                                    name_list: List[str], color_list: List[str], xlabel_list: List[str], batch_size: int, figure_name: str, save_folder: str = None):
     fig, axs = plt.subplots(2, 3, figsize=(25, 20))  # 创建一个包含 2 行 3 列子图的图形
     fig.tight_layout(pad=6.0)  # 子图之间的间距
     for i, ax in enumerate(axs.flat):  # axs.flat 会将二维子图展平，便于迭代
@@ -87,6 +102,10 @@ def draw_corr_columnar_distribution(bin_start_list: List[float], bin_end_list: L
 
     fig.delaxes(axs[1, 2])  # 删除右下角的空白子图
     plt.show()
+    if save_folder is not None:
+        os.makedirs(save_folder, exist_ok=True)
+        save_path = os.path.join(save_folder, figure_name + ".png")
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
 
 def expectation_compute(corrnorm_list: List[float], bin_start: float, bin_end: float, bin_width: float):
     bins = np.arange(bin_start, bin_end + bin_width, bin_width)

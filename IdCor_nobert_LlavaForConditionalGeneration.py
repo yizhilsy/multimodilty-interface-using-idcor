@@ -65,19 +65,22 @@ class IdCor_nobert_LlavaForConditionalGeneration(LlavaForConditionalGeneration):
                 im_start_indices_list.append(row_im_start_list)
             
             return im_start_indices_list
-                
+
         # check the data in the batch
         batch_size = input_ids.shape[0]
         device = input_ids.device        
 
-        # extra the text embeddings representating the total text information by fusion inputs_embeds using the attention
+        """
+            extra the text embeddings representating the total text information by fusion inputs_embeds using the attention-like method
+            NOTE 理想情况下每行input_ids的<image> token的个数一致, 但此算法也能处理每行input_ids的<image> token的个数不一致的情况, 统一滤除剩一个<image> token, 具有健壮性
+        """
         if input_ids is not None and attention_mask is not None:
             """
                 TODO: 设计纯粹基于llava文本模型的文本特征提取和融合算法
             """
             # 此时的input_ids经过了tokenizer处理，呈现为以batch为组织，但包含了大量的<image> token占位符，需要过滤剩一个<image> token
             im_start_indices_list:List[List[int]] = SlidingWindowGetImStart(input_ids=input_ids, image_token_index=self.config.image_token_index) # 获取每行中的<image> token区间的起始位置
-            text_mask = (input_ids != self.config.image_token_index)   # 构造掩码标识出text token的位置, 每行input_ids的<image> token的个数一致
+            text_mask = (input_ids != self.config.image_token_index)   # 构造掩码标识出text token的位置
             
             for batch_index, row_im_start_indices in enumerate(im_start_indices_list):
                 for im_start_indice in row_im_start_indices:
@@ -100,7 +103,7 @@ class IdCor_nobert_LlavaForConditionalGeneration(LlavaForConditionalGeneration):
             # 更新attention_mask
             final_attention_mask = torch.ones_like(final_text_input_ids)
             final_attention_mask[final_text_input_ids == processor.tokenizer.pad_token_id] = 0
-
+    
             # 使用父类method获取inputs_embeds
             inputs_embeds = self.get_input_embeddings()(final_text_input_ids)
 

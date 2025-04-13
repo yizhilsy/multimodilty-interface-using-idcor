@@ -1,0 +1,85 @@
+{
+    "question-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/llava_test_CQM-A.json",
+    "image-folder": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/images/test",
+    "answers-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[new_prompt]llava-trainjson_ck2000-qwen3BInstruct-clipvL14.jsonl",
+    "temperature": 0,
+    "models": [
+        {
+            "model-path": "/home/lsy/workspace/llava_test/qwen2.5_3B_Instruct_clipvL14_model/model001",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-noaligned-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-2000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck2000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-4000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck4000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-6000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck6000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-8000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck8000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-10000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck10000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-12000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck12000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-14000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck14000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-16000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck16000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-18000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck18000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-20000",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/scienceqa/answers/zero_shot/new_prompt/v2/llava-trainjson_ck20000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        }        
+    ]
+}

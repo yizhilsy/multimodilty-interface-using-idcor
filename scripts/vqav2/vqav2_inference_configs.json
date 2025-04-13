@@ -1,0 +1,52 @@
+{
+    "image-folder": "/home/lsy/shared_data/test2015",
+    "question-file": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/vqav2/llava_vqav2_mscoco_test-dev2015.jsonl",
+    "num-chunks": 1,
+    "chunk-idx": 0,
+    "temperature": 0,
+    "num_beams": 1,
+    "max_new_tokens": 1024,
+    "models":[
+        {
+            "model-path": "/home/lsy/workspace/llava_test/qwen2.5_3B_Instruct_clipvL14_model/model001",
+            "lora-path": "/home/lsy/workspace/llava_test/result_model/stage2/[v1.finetune_sqa]noaligned_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/vqav2/answers/llava_vqav2_mscoco_test-dev2015/finetune3epochs/[new_prompt]llava-noaligned-qwen2.5_3B_Instruct-clipvL14.jsonl"
+        },
+
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-2000",
+            "lora-path": "/home/lsy/workspace/llava_test/result_model/stage2/[v2.finetune_sqa]/trainjson_ck2000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/vqav2/answers/llava_vqav2_mscoco_test-dev2015/finetune3epochs/[new_prompt]llava-tranjson_ck2000-qwen2.5_3B_Instruct-clipvL14.jsonl"
+        },
+
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-4000",
+            "lora-path": "/home/lsy/workspace/llava_test/result_model/stage2/[v2.finetune_sqa]/trainjson_ck4000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/vqav2/answers/llava_vqav2_mscoco_test-dev2015/finetune3epochs/[new_prompt]llava-tranjson_ck4000-qwen2.5_3B_Instruct-clipvL14.jsonl"
+        },
+
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-6000",
+            "lora-path": "/home/lsy/workspace/llava_test/result_model/stage2/[v2.finetune_sqa]/trainjson_ck6000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/vqav2/answers/llava_vqav2_mscoco_test-dev2015/finetune3epochs/[new_prompt]llava-tranjson_ck6000-qwen2.5_3B_Instruct-clipvL14.jsonl"
+        },
+
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-8000",
+            "lora-path": "/home/lsy/workspace/llava_test/result_model/stage2/[v2.finetune_sqa]/trainjson_ck8000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/vqav2/answers/llava_vqav2_mscoco_test-dev2015/finetune3epochs/[new_prompt]llava-tranjson_ck8000-qwen2.5_3B_Instruct-clipvL14.jsonl"
+        },
+
+        {
+            "model-path": "/home/lsy/workspace/llava_test/result_model/stage1/[v3.CC3M-Pretrain-595K]qwen2.5_3B_Instruct_clipvL14/checkpoint-10000",
+            "lora-path": "/home/lsy/workspace/llava_test/result_model/stage2/[v2.finetune_sqa]/trainjson_ck10000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:0",
+            "answers-file": "/home/lsy/workspace/llava_test/playground/eval/vqav2/answers/llava_vqav2_mscoco_test-dev2015/finetune3epochs/[new_prompt]llava-tranjson_ck10000-qwen2.5_3B_Instruct-clipvL14.jsonl"
+        }
+    ]
+}

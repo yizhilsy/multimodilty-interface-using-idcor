@@ -1,0 +1,61 @@
+{
+    "question-file": "../../../playground/eval/scienceqa/llava_test_CQM-A.json",
+    "image-folder": "../../../playground/eval/scienceqa/images/test",
+    "answers-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[new_prompt]llava-trainjson_ck2000-qwen3BInstruct-clipvL14.jsonl",
+    "temperature": 0,
+    "models": [
+        {
+            "model-path": "/d/lsy/pythonworkspace/llava_test/qwen2.5_3B_Instruct_clipvL14_model/model001",
+            "lora-path": "/d/lsy/pythonworkspace/llava_test/result_model/stage2/scienceqa/[v2.finetune_sqa]/trainjson_ck40000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:0",
+            "answers-file": "/d/lsy/pythonworkspace/llava_test/playground/eval/scienceqa/answers/finetune3epochs/[new_prompt]llava-trainjson_ck40000-qwen3BInstruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+
+        {
+            "model-path": "/d/lsy/pythonworkspace/llava_test/qwen2.5_3B_Instruct_clipvL14_model/model001",
+            "lora-path": "/d/lsy/pythonworkspace/llava_test/result_model/stage2/scienceqa/[v2.finetune_sqa]/trainjson_ck42000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:1",
+            "answers-file": "/d/lsy/pythonworkspace/llava_test/playground/eval/scienceqa/answers/finetune3epochs/[new_prompt]llava-trainjson_ck42000-qwen3BInstruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+
+        {
+            "model-path": "/d/lsy/pythonworkspace/llava_test/qwen2.5_3B_Instruct_clipvL14_model/model001",
+            "lora-path": "/d/lsy/pythonworkspace/llava_test/result_model/stage2/scienceqa/[v2.finetune_sqa]/trainjson_ck44000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:0",
+            "answers-file": "/d/lsy/pythonworkspace/llava_test/playground/eval/scienceqa/answers/finetune3epochs/[new_prompt]llava-trainjson_ck44000-qwen3BInstruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+
+        {
+            "model-path": "/d/lsy/pythonworkspace/llava_test/qwen2.5_3B_Instruct_clipvL14_model/model001",
+            "lora-path": "/d/lsy/pythonworkspace/llava_test/result_model/stage2/scienceqa/[v2.finetune_sqa]/trainjson_ck46000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:1",
+            "answers-file": "/d/lsy/pythonworkspace/llava_test/playground/eval/scienceqa/answers/finetune3epochs/[new_prompt]llava-trainjson_ck46000-qwen3BInstruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+
+        {
+            "model-path": "/d/lsy/pythonworkspace/llava_test/qwen2.5_3B_Instruct_clipvL14_model/model001",
+            "lora-path": "/d/lsy/pythonworkspace/llava_test/result_model/stage2/scienceqa/[v2.finetune_sqa]/trainjson_ck48000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:0",
+            "answers-file": "/d/lsy/pythonworkspace/llava_test/playground/eval/scienceqa/answers/finetune3epochs/[new_prompt]llava-trainjson_ck48000-qwen3BInstruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        },
+
+        {
+            "model-path": "/d/lsy/pythonworkspace/llava_test/qwen2.5_3B_Instruct_clipvL14_model/model001",
+            "lora-path": "/d/lsy/pythonworkspace/llava_test/result_model/stage2/scienceqa/[v2.finetune_sqa]/trainjson_ck50000_qwen2.5_3B_Instruct_clipvL14",
+            "device": "cuda:1",
+            "answers-file": "/d/lsy/pythonworkspace/llava_test/playground/eval/scienceqa/answers/finetune3epochs/[new_prompt]llava-trainjson_ck50000-qwen3BInstruct-clipvL14.jsonl",
+            "temperature": 0,
+            "conv-mode": "vicuna_v1"
+        }
+    ]
+}
