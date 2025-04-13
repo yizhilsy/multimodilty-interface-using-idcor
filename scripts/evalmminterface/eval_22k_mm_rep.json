@@ -1,0 +1,34 @@
+{
+    "batch_size": 256,
+    "id_alg": "twoNN",
+    "shuffleN": 100,
+    "bin_start_list": [
+        0.0, 0.0, 0.0, 0.0, 0.0
+    ],
+    "bin_end_list": [
+        1.0, 5.0, 40.0, 1.0, 30.0
+    ],
+    "bin_width_list": [
+        0.05, 1.0, 4.0, 0.05, 3.0
+    ],
+    "name_list": [
+        "idcor", "text_id", "image_id", "p", "merge_id"
+    ],
+    "color_list": [
+        "red", "green", "yellow", "blue", "pink"
+    ],
+    "xlabel_list": [
+        "idcor with text_embeds and image_embeds Interval",
+        "id for text_embeds Interval",
+        "id for image_embeds Interval",
+        "pvalues with corr of text_embeds and image_embeds Interval",
+        "merge_id with text_embeds and image_embeds Interval"
+    ],
+    "save_folder": "../../result_imgs/oldextraalg/LLaVA-CC3M-Pretrain-595K/finetune",
+    "mm_rep_paths": [        
+        {
+            "textRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck22000_qwen2.5_3B_Instruct_clipvL14_model_text.pt",
+            "imageRepPath": "../../representation/LLaVA-CC3M-Pretrain-595K/oldextra/finetune/trainjson_ck22000_qwen2.5_3B_Instruct_clipvL14_model_image.pt"
+        }
+    ]
+}

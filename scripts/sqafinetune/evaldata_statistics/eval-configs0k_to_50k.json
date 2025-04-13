@@ -1,0 +1,160 @@
+{
+    "models": [
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-noaligned-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-noaligned-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-noaligned-qwen2.5_3B_Instruct-clipvL14_result.jsonl"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck2000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck2000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck2000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck4000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck4000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck4000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck6000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck6000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck6000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck8000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck8000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck8000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck10000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck10000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck10000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck12000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck12000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck12000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck14000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck14000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck14000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck16000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck16000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck16000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck18000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck18000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck18000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck20000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck20000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck20000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck22000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck22000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck22000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck24000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck24000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck24000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck26000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck26000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck26000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck28000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck28000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck28000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck30000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck30000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck30000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck32000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck32000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck32000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck34000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck34000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck34000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck36000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck36000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck36000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck38000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck38000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck38000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck40000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck40000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck40000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck42000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck42000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck42000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck44000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck44000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck44000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck46000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck46000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck46000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck48000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck48000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck48000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        },
+        {
+            "base-dir": "/home/lsy/workspace/papercode/LLaVA/playground/data/eval/scienceqa",
+            "result-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck50000-qwen2.5_3B_Instruct-clipvL14.jsonl",
+            "output-file": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck50000-qwen2.5_3B_Instruct-clipvL14_output.jsonl",
+            "output-result": "../../../playground/eval/scienceqa/answers/finetune3epochs/[correct]addnonmmacc/[new_prompt]llava-trainjson_ck50000-qwen2.5_3B_Instruct-clipvL14_result.json"
+        }
+    ]
+}
