@@ -114,7 +114,7 @@ def load_dataset_collator(processor, dataargs: DataArguments, processargs: Proce
         llava_dataset = N24News_LlavaDataset(
             dataargs.data_path  # "/d/lsy/shared_data/N24News"
         )
-    data_collator = TrainLLavaModelCollator(processor, -100, processargs.model_max_q_length, processargs.model_max_q_length)
+    data_collator = TrainLLavaModelCollator(processor, -100, processargs.model_max_q_length, processargs.model_max_a_length)
     return llava_dataset, data_collator
 
 if __name__ == "__main__":

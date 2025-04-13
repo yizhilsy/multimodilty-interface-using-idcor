@@ -2,6 +2,7 @@ import subprocess
 import concurrent.futures
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Tuple
+
 import json, os, time
 import argparse
 
@@ -37,7 +38,7 @@ def run_extra_rep(extra_config: ExtraConfig):
     command = []
     if extra_config.lora_name_or_path is not None:
         command = [
-            "python", "/home/lsy/workspace/llava_test/custom_eval_idcor.py",
+            "python", "/d/lsy/pythonworkspace/llava_test/custom_eval_idcor.py",
             "--model_name_or_path", extra_config.model_name_or_path,
             "--lora_name_or_path", extra_config.lora_name_or_path,
             "--bert_name_or_path", extra_config.bert_name_or_path,
@@ -49,7 +50,7 @@ def run_extra_rep(extra_config: ExtraConfig):
         ]
     else:
         command = [
-            "python", "/home/lsy/workspace/llava_test/custom_eval_idcor.py",
+            "python", "/d/lsy/pythonworkspace/llava_test/custom_eval_idcor.py",
             "--model_name_or_path", extra_config.model_name_or_path,
             "--bert_name_or_path", extra_config.bert_name_or_path,
             "--data_path", extra_config.data_path,
@@ -103,7 +104,7 @@ if __name__ == "__main__":
                                           subversion=subversion
                                           ))
     
-    ThreadPool_Execute(1, extraconfig_list=extraconfig_list)
+    ThreadPool_Execute(2, extraconfig_list=extraconfig_list)
     
 
     
