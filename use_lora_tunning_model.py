@@ -12,9 +12,9 @@ os.chdir(current_file_directory)
 device = "cuda:0"
 
 # 基础模型路径（ lora 微调的初始模型）
-base_model_path = "./qwen2.5_3B_Instruct_clipvL14_model/model001"
+base_model_path = "/dataset/stage1/checkpoint-2000"
 # lora 微调模型路径
-lora_model_path = "./output_model_lora_show/[epoch4-5]qwen2.5_3B_Instruct_clipvL14"
+lora_model_path = "/dataset/stage2/[v2.finetune_sqa]/trainjson_ck2000_qwen2.5_3B_Instruct_clipvL14"
 
 mini_model_path = "./mini_model/model001"
 mini_lora_model_path = "./output_model_lora_show/qwen1.5_0.5B_clipvL14"
@@ -28,6 +28,7 @@ model = LlavaForConditionalGeneration.from_pretrained(
 
 # 加载 lora 适配器
 model = PeftModel.from_pretrained(model, lora_model_path)
+model = model.merge_and_unload()
 
 processor = AutoProcessor.from_pretrained(pretrained_model_name_or_path=base_model_path)
 

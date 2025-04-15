@@ -48,7 +48,7 @@ class IdCor_nobert_LlavaForConditionalGeneration(LlavaForConditionalGeneration):
 
         def SlidingWindowGetImStart(input_ids: torch.LongTensor, image_token_index: int) -> List[List[int]]:
             """
-                获取input_ids中每行中的<image> token的起始位置
+                获取input_ids张量中每行中的<image> token的起始位置
             """
             input_id_list = [input_id for input_id in torch.unbind(input_ids, dim=0)]
             im_start_indices_list: List[List[int]] = []

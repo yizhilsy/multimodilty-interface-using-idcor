@@ -27,7 +27,7 @@ import argparse
 """
 
 # 导入读取数据集和处理数据集为向量的工具类
-from show_llava.finetune_data import finetune_SupervisedDataset, TrainLLavaModelCollator
+from show_llava.extraRep_data import ExtraRepDataset, ExtraLLavaModelRepCollator
 from show_llava.data import N24News_LlavaDataset
 from show_llava.util import print_trainable_parameters
 
@@ -58,6 +58,8 @@ parser.add_argument('--dataset', type=str, default='LLaVA-CC3M-Pretrain-595K', h
 parser.add_argument('--model_max_q_length', type=int, default=768, help='model_max_q_length')
 parser.add_argument('--model_max_a_length', type=int, default=512, help='model_max_a_length')
 parser.add_argument('--subversion', type=str, default='v1', help='version sub the dataset(dataset/subversion)')
+parser.add_argument('--subsubstatus', type=str, default='finetune', help='substatus sub the subversion(dataset/subversion/substatus)')
+parser.add_argument('--extra_batch_size', type=int, default=128, help='batch_size for extraing representation')
 
 # 指定要训练的模型路径及训练参数工具类
 @dataclass
@@ -106,7 +108,7 @@ def load_model_processor(modelargs: ModelArguments, device: str):
 def load_dataset_collator(processor, dataargs: DataArguments, processargs: ProcessArguments):
     llava_dataset = None
     if args.dataset == "LLaVA-CC3M-Pretrain-595K":
-        llava_dataset = finetune_SupervisedDataset(
+        llava_dataset = ExtraRepDataset(
             dataargs.data_path,  # "/d/lsy/shared_data/liuhaotian/LLaVA-CC3M-Pretrain-595K"
             dataargs.image_folder
         )
@@ -114,7 +116,7 @@ def load_dataset_collator(processor, dataargs: DataArguments, processargs: Proce
         llava_dataset = N24News_LlavaDataset(
             dataargs.data_path  # "/d/lsy/shared_data/N24News"
         )
-    data_collator = TrainLLavaModelCollator(processor, -100, processargs.model_max_q_length, processargs.model_max_a_length)
+    data_collator = ExtraLLavaModelRepCollator(processor, -100, processargs.model_max_q_length, processargs.model_max_a_length)
     return llava_dataset, data_collator
 
 if __name__ == "__main__":
@@ -143,35 +145,38 @@ if __name__ == "__main__":
     device = args.device
 
     # 创建保存text_embeds和image_embeds的文件夹
-    if not os.path.exists(f'./representation/{args.dataset}/{args.subversion}'):
-        os.makedirs(f'./representation/{args.dataset}/{args.subversion}', exist_ok=True)
+    if not os.path.exists(f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}'):
+        os.makedirs(f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}', exist_ok=True)
 
     model, processor = load_model_processor(modelargs=model_args, device=device)
     eval_dataset, data_collator = load_dataset_collator(processor, data_args, process_args)
     dataloader_params = {
-        "batch_size": 128,
+        "batch_size": args.extra_batch_size,
         "collate_fn": data_collator,
-        "num_workers": 4,
+        "num_workers": 2,   # 适配科研云的极少cpu资源
         "pin_memory": True,
-        "persistent_workers": 4,
+        "persistent_workers": 2,
         "shuffle": False
     }
     eval_dataloader = DataLoader(eval_dataset, **dataloader_params)
+    chop_threshold: int = (len(eval_dataset) // dataloader_params["batch_size"]) // 2   # 将抽取到的文本特征张量和图像特征张量截断，避免memory out
     model.eval()
     with torch.no_grad():
         all_text_embeds = []
         all_image_embeds = []
         for steps, inputs in tqdm(enumerate(eval_dataloader)):
-            input_ids = inputs["input_ids"].to(device)
+            q_input_ids = inputs["q_input_ids"].to(device)
+            a_input_ids = inputs["a_input_ids"].to(device)
             pixel_values = inputs["pixel_values"].to(device)
-            attention_mask = inputs["attention_mask"].to(device)
+            q_attention_mask = inputs["q_attention_mask"].to(device)
+            a_attention_mask = inputs["a_attention_mask"].to(device)
 
             # 调用IdCor_LlavaForConditionalGeneration加载的模型新增的extra_imageAndtext_embeddings方法
             image_and_text_embeddings = model.extra_imageAndtext_embeddings(
                 processor=processor,
-                input_ids=input_ids,
+                input_ids=q_input_ids,
                 pixel_values=pixel_values,
-                attention_mask=attention_mask,
+                attention_mask=q_attention_mask,
                 vision_feature_layer=-2,
                 vision_feature_select_strategy="default"
             )
@@ -179,20 +184,40 @@ if __name__ == "__main__":
             image_embeds = image_and_text_embeddings.image_embeds
             text_embeds = image_and_text_embeddings.text_embeds
             
-            # test 粗略计算一下idcor
-            corr = id_correlation(text_embeds.to(torch.float32), image_embeds.to(torch.float32), 100, 'twoNN')
-            logging.info(f"corr: {corr}")
+            # # test 粗略计算一下idcor
+            # corr = id_correlation(text_embeds.to(torch.float32), image_embeds.to(torch.float32), 100, 'twoNN')
+            # logging.info(f"corr: {corr}")
 
             # 保存每个batch_size的image_embeds和text_embeds
             all_text_embeds.append(text_embeds.detach().cpu())
             all_image_embeds.append(image_embeds.detach().cpu())
 
-    # 将所有的image_embeds和text_embeds拼接起来
+            if steps == chop_threshold: # 执行的batch步数到达了设定的截断阈值后，保存抽取的文本和图像特征的前一部分张量
+                all_text_embeds = torch.cat(all_text_embeds, dim=0)
+                all_image_embeds = torch.cat(all_image_embeds, dim=0)
+                logging.info(f"first text_embeds tensor shape: {all_text_embeds.shape}")
+                logging.info(f"first image_embeds tensor shape: {all_image_embeds.shape}")
+                try:
+                    torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_text_1.pt')
+                    torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_image_1.pt')
+                    print("first represention torch saved successfully.")
+                except Exception as e:
+                    print(f"Error occurred while saving first text&&image tensor: {e}")
+                all_text_embeds = []
+                all_image_embeds = []
+
+    # 将第二部分的image_embeds和text_embeds拼接起来
     all_text_embeds = torch.cat(all_text_embeds, dim=0)
     all_image_embeds = torch.cat(all_image_embeds, dim=0)
     
-    logging.info(f"all_text_embeds shape: {all_text_embeds.shape}")
-    logging.info(f"all_image_embeds shape: {all_image_embeds.shape}")
+    logging.info(f"second text_embeds tensor shape: {all_text_embeds.shape}")
+    logging.info(f"second image_embeds tensor shape: {all_image_embeds.shape}")
 
-    torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_text.pt')
-    torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.output_representation_name}_image.pt')
+    # 保存抽取及融合的第二部分的文本和图像特征张量
+    try:
+        torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_text_2.pt')
+        torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_image_2.pt')
+        print("second represention torch saved successfully.")
+    except Exception as e:
+        print(f"Error occurred while saving second text&&image tensor: {e}")
+    

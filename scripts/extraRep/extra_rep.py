@@ -10,8 +10,6 @@ current_file_directory = os.path.dirname(os.path.abspath(__file__))
 # 设置为 python 脚本当前所在的目录
 os.chdir(current_file_directory)
 
-file_name_or_path = None
-
 @dataclass
 class ExtraConfig:
     model_name_or_path: str = field(
@@ -44,6 +42,12 @@ class ExtraConfig:
     subversion: str = field(
         default='v1', metadata={"help": "version sub the dataset(dataset/subversion)"}
     )
+    subsubstatus: str = field(
+        default='finetune', metadata={"help": "status sub the subversion(dataset/subversion/subsubstatus)"}
+    )
+    extra_batch_size: int = field(
+        default=128, metadata={"help": "batch_size for extraing representation"}
+    )
 
 
 def run_extra_rep(extra_config: ExtraConfig):
@@ -60,11 +64,13 @@ def run_extra_rep(extra_config: ExtraConfig):
             "--dataset", extra_config.dataset,
             "--model_max_q_length", str(extra_config.model_max_q_length),
             "--model_max_a_length", str(extra_config.model_max_a_length),
-            "--subversion", extra_config.subversion
+            "--subversion", extra_config.subversion,
+            "--subsubstatus", extra_config.subsubstatus,
+            "--extra_batch_size", str(extra_config.extra_batch_size)
         ]
     else:   # 无lora微调适配参数
         command = [
-            "python", file_name_or_path,
+            "python", "../../extra_mm_representations.py",
             "--model_name_or_path", extra_config.model_name_or_path,
             "--data_path", extra_config.data_path,
             "--image_folder", extra_config.image_folder,
@@ -73,13 +79,12 @@ def run_extra_rep(extra_config: ExtraConfig):
             "--dataset", extra_config.dataset,
             "--model_max_q_length", str(extra_config.model_max_q_length),
             "--model_max_a_length", str(extra_config.model_max_a_length),
-            "--subversion", extra_config.subversion
+            "--subversion", extra_config.subversion,
+            "--subsubstatus", extra_config.subsubstatus,
+            "--extra_batch_size", str(extra_config.extra_batch_size)
         ]
-
-    script_dir = os.path.dirname(os.path.abspath(file_name_or_path))    # 获取实际工作脚本所在的目录
-
     print(f"Running extra_representations command: {command}")
-    subprocess.run(command, cwd=script_dir) # 子进程在实际工作脚本所在的目录下执行command命令
+    subprocess.run(command) # 子进程在实际工作脚本所在的目录下执行command命令
 
 def ThreadPool_Execute(num_workers: int, extraconfig_list: List[ExtraConfig]):
     # 使用线程池并行执行num_workers个任务
@@ -103,11 +108,12 @@ if __name__ == "__main__":
     with open(args.extra_configs) as extra_config_file:
         configs = json.load(extra_config_file)
 
-    file_name_or_path = configs['file_name_or_path']
     data_path = configs['data-path']
     image_folder = configs['image-folder']
     dataset = configs['dataset']
     subversion = configs['subversion']
+    subsubstatus = configs['subsubstatus']
+    extra_batch_size = configs['extra_batch_size']
     models = configs['models']
     
     extraconfig_list: List[ExtraConfig] = []
@@ -122,7 +128,9 @@ if __name__ == "__main__":
                                           dataset=dataset,
                                           model_max_q_length=model['model_max_q_length'],
                                           model_max_a_length=model['model_max_a_length'],
-                                          subversion=subversion
+                                          subversion=subversion,
+                                          subsubstatus=subsubstatus,
+                                          extra_batch_size=extra_batch_size
                                           ))
     
     ThreadPool_Execute(1, extraconfig_list=extraconfig_list)
