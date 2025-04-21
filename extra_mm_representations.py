@@ -159,7 +159,9 @@ if __name__ == "__main__":
         "shuffle": False
     }
     eval_dataloader = DataLoader(eval_dataset, **dataloader_params)
-    chop_threshold: int = (len(eval_dataset) // dataloader_params["batch_size"]) // 2   # 将抽取到的文本特征张量和图像特征张量截断，避免memory out
+    num_chunks = 16
+    ct = 0
+    chop_threshold: int = (len(eval_dataset) // dataloader_params["batch_size"]) // num_chunks   # 将抽取到的文本特征张量和图像特征张量截断，避免memory out
     model.eval()
     with torch.no_grad():
         all_text_embeds = []
@@ -192,32 +194,32 @@ if __name__ == "__main__":
             all_text_embeds.append(text_embeds.detach().cpu())
             all_image_embeds.append(image_embeds.detach().cpu())
 
-            if steps == chop_threshold: # 执行的batch步数到达了设定的截断阈值后，保存抽取的文本和图像特征的前一部分张量
+            if steps != 0 and steps % chop_threshold == 0: # 执行的batch步数到达了设定的截断阈值的整数倍后，保存抽取的文本和图像特征的那一区间张量
                 all_text_embeds = torch.cat(all_text_embeds, dim=0)
                 all_image_embeds = torch.cat(all_image_embeds, dim=0)
-                logging.info(f"first text_embeds tensor shape: {all_text_embeds.shape}")
-                logging.info(f"first image_embeds tensor shape: {all_image_embeds.shape}")
+                logging.info(f"{args.output_representation_name}\'s {ct} text_embeds tensor shape: {all_text_embeds.shape}")
+                logging.info(f"{args.output_representation_name}\'s {ct} image_embeds tensor shape: {all_image_embeds.shape}")
                 try:
-                    torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_text_1.pt')
-                    torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_image_1.pt')
-                    print("first represention torch saved successfully.")
+                    torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_text_{ct}.pt')
+                    torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_image_{ct}.pt')
+                    print(f"{args.output_representation_name}\'s {ct} represention torch saved successfully.")
                 except Exception as e:
-                    print(f"Error occurred while saving first text&&image tensor: {e}")
+                    print(f"Error occurred while saving {args.output_representation_name}\'s {ct} text&&image tensor: {e}")
                 all_text_embeds = []
                 all_image_embeds = []
+                ct = ct + 1
 
-    # 将第二部分的image_embeds和text_embeds拼接起来
+    # 将最后部分的image_embeds和text_embeds拼接起来
     all_text_embeds = torch.cat(all_text_embeds, dim=0)
     all_image_embeds = torch.cat(all_image_embeds, dim=0)
     
-    logging.info(f"second text_embeds tensor shape: {all_text_embeds.shape}")
-    logging.info(f"second image_embeds tensor shape: {all_image_embeds.shape}")
+    logging.info(f"{args.output_representation_name}\'s (last){ct} text_embeds tensor shape: {all_text_embeds.shape}")
+    logging.info(f"{args.output_representation_name}\'s (last){ct} image_embeds tensor shape: {all_image_embeds.shape}")
 
     # 保存抽取及融合的第二部分的文本和图像特征张量
     try:
-        torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_text_2.pt')
-        torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_image_2.pt')
-        print("second represention torch saved successfully.")
+        torch.save(all_text_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_text_{ct}.pt')
+        torch.save(all_image_embeds, f'./representation/{args.dataset}/{args.subversion}/{args.subsubstatus}/{args.output_representation_name}_image_{ct}.pt')
+        print("{args.output_representation_name}\'s (last){ct} represention torch saved successfully.")
     except Exception as e:
-        print(f"Error occurred while saving second text&&image tensor: {e}")
-    
+        print(f"Error occurred while saving {args.output_representation_name}\'s (last){ct} text&&image tensor: {e}")
