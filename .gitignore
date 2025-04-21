@@ -22,6 +22,8 @@ log/*
 scripts/sqafinetune/inference/inference2k_to_26k.log
 scripts/sqafinetune/inference/inference28k_to_38k.log
 scripts/sqafinetune/inference/inference40k_to_50k.log
+# 忽略所有log日志文件
+*.log
 
 # Python
 __pycache__
